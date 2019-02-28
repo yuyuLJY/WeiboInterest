@@ -1,0 +1,23 @@
+<!--微博内容-->
+            <div class="content" node-type="like">
+                <div class="info">
+                    <div class="menu s-fr">
+                        <a href="javascript:void(0);" action-type="fl_menu"><i class="wbicon">c</i></a>
+                        <ul node-type="fl_menu_right" style="display:none;">
+                            <li><a href="javascript:void(0);" onclick="javascript:window.open('//service.account.weibo.com/reportspam?rid=4341536218630641&amp;type=1&amp;from=10501&amp;url=&amp;bottomnav=1&amp;wvr=6', 'newwindow', 'height=700, width=550, toolbar =yes, menubar=no, scrollbars=yes, resizable=yes, location=no, status=no');">投诉</a></li>
+                                                            <!--主持人流干预-->
+
+                                                    </ul>
+                    </div>
+                    <div>
+                        <a href="//weibo.com/5516752365?refer_flag=1001030103_" class="name" target="_blank" nick-name="安吉拉大伯伯" suda-data="key=tblog_search_weibo&value=seqid:155125630827602913454|type:1|t:0|pos:2-0|q:%23%E8%B7%9F%E9%A3%8E%E4%B9%B0%20%E5%8F%A3%E7%BA%A2%E5%A7%A8%E5%A6%88%E5%B7%BE%23|ext:cate:31,mpos:4,click:user_name">安吉拉大伯伯</a>
+
+                        <!--广告微博加关注按钮 -->
+                     </div>
+                </div>
+                <p class="txt" node-type="feed_list_content" nick-name="安吉拉大伯伯">
+                    <a href="http://s.weibo.com/weibo?q=%23%E8%B7%9F%E9%A3%8E%E4%B9%B0%20%E5%8F%A3%E7%BA%A2%E5%A7%A8%E5%A6%88%E5%B7%BE%23"  target="_blank">#<em class="s-color-red">跟风</em><em class="s-color-red">买</em> <em class="s-color-red">口红</em><em class="s-color-red">姨妈</em><em class="s-color-red">巾</em>#</a>
+                    <br/>吓我一跳 我第一反应还以为是用完再当古代那种<em class="s-color-red">口红</em>纸用.......................... ​                </p>
+                                                <p class="from" >
+                                         来自 <a href="http://weibo.com/" rel="nofollow">iPhone客户端</a>                </p>
+            </div>
