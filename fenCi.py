@@ -11,7 +11,8 @@ def drawPicture():
 
 # 返回词的频率和词
 def countWord(sentence):
-    jieba.add_word('猪猪包')
+    '''
+        jieba.add_word('猪猪包')
     jieba.add_word('热巴')
     jieba.add_word('迪丽热巴')
     jieba.add_word('掌心包')
@@ -33,26 +34,24 @@ def countWord(sentence):
     jieba.add_word("挺新")
     jieba.add_word("双11")
     jieba.add_word("双12")
-    word = jieba.lcut(sentence,cut_all=False)
+    '''
+    words_dict_path = "weibo/词库.txt"
+    jieba.load_userdict(words_dict_path)
+    word = jieba.lcut(sentence)
     # 检验分词效果
     for i in range(len(word)):
         print("word:"+ word[i])
 
     stopwords = []
-    f = open("stopword.txt", 'r', encoding='UTF-8')  # 返回一个文件对象
+    f = open("weibo/stopword_comment.txt", 'r', encoding='UTF-8')  # 返回一个文件对象
     line = f.readline()  # 调用文件的 readline()方法
     while line:
         line = line.replace('\n', '')
         stopwords.append(line)
         line = f.readline()
     f.close()
-    stopwords.append("\t")
+    stopwords.append(" ")
     stopwords.append('哒')
-    # print(stopwords.__contains__("！"))
-    # print(word.__contains__("少女"))
-    # print(word[5].__eq__("好")) # False
-    # print(word[5]) # 好
-    #print(str(word[5]))
     wordfrequency = defaultdict(int)
     for w in word:
         if w not in stopwords:
@@ -84,12 +83,19 @@ def writeToExel(wordfrequency):
     style = xlwt.XFStyle()
     workbook = xlwt.Workbook()
     worksheet = workbook.add_sheet('#new')
+    wordfrequency_order = sorted(wordfrequency.items(), key=lambda x: x[1], reverse=True)  # 把字典按词频降序排列
+    for n in range(1, len(wordfrequency_order) + 2):  # 把降序后的词频统计结果写入excel
+        worksheet.write(n, 1, wordfrequency_order[n - 2][0],style)
+        worksheet.write(n, 2, wordfrequency_order[n - 2][1])
+
+    '''
     i = 1
     for w in wordfrequency:
         worksheet.write(i, 0, w, style)  # Outputs 5
         worksheet.write(i, 1, wordfrequency[w])  # Outputs 2
         i = i+1
-    workbook.save('掌心包分词1.xls')
+    '''
+    workbook.save('test.xls')
 
 def main():
     # 逐行读取文件，并把评论拼接成一个str
@@ -104,17 +110,21 @@ def main():
         line = f.readline()
     f.close()
     '''
-    exfile = xlrd.open_workbook("掌心包粗略评论分词&cleanData.xls")
-    sheet1 = exfile.sheet_by_name('RawData')  # 读取Sheet1的内容，根据实际情况填写表名
 
-    n = sheet1.nrows  # 表的总行数
+    comment_list = ['1876693235','1978351291','619880505','1428990944','1743027543','735658915','1562697291','1601455762',
+                    '1634059993','523790789','1783376715','2007283277']
     mytext = ''
-    for i in range(1, n):
-        text = sheet1.row(i)[1].value  # 从第0行开始计数，第0行是栏目，第1行是要的内容
-        mytext = mytext + " " + text  # 把每一天内容合并到一个str中
+    for i in range(len(comment_list)):
+        exfile = xlrd.open_workbook("weibo/comment/"+comment_list[i]+".xls")
+        sheet1 = exfile.sheet_by_name('#')  # 读取Sheet1的内容，根据实际情况填写表名
 
+        n = sheet1.nrows  # 表的总行数
+        for i in range(0, n):
+            text = sheet1.row(i)[1].value  # 从第0行开始计数，第0行是栏目，第1行是要的内容
+            mytext = mytext + " " + text  # 把每一天内容合并到一个str中
 
     print("组合后:"+mytext)
+    mytext = re.sub('[a-zA-Z0-9]','',mytext)
     # fre,word = countWord(str)
     fre = countWord(mytext) # 返回词频字典
     writeToExel(fre)
