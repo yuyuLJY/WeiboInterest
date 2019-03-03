@@ -217,7 +217,7 @@ def getAvalidID(avalidID):
         cleanText = re.findall(r'[0-9]+', text)[0]
         if not avalidID.__contains__(cleanText):
             avalidID.append(cleanText)
-    # 开始进行解析
+
 
 
 #把提取出来的有效ID，写进表格
