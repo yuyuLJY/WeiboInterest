@@ -67,12 +67,13 @@ def  computeWordFrequency(wordList):
     :return:词频矩阵
     '''
     # print(wordList)
-    c_vectorizer = CountVectorizer(max_df=0.95, min_df=3,max_features=1000)
+    # min_df = 3
+    c_vectorizer = CountVectorizer(max_df=0.90, min_df = 2,max_features=100)
     word_frequency_mat = c_vectorizer .fit_transform(wordList)
     feature_names = c_vectorizer.get_feature_names()
-    #print(c_vectorizer.vocabulary_)
-    #print(word_frequency_mat)
+    # print(c_vectorizer.vocabulary_)
     return word_frequency_mat, feature_names
+    #print(word_frequency_mat)
 
 def computeTFIDF(word_frequency_mat):
     '''
@@ -91,7 +92,7 @@ def LDA(tfidf_mat):
     :return: lda模型
     '''
     # 主题个数和迭代次数
-    lda_model = LatentDirichletAllocation(n_components=2, max_iter=1300,learning_method='batch')
+    lda_model = LatentDirichletAllocation(n_components=1, max_iter=500,learning_method='batch')
     # 使用TF-IDF矩阵拟合LDA模型
     lda_model.fit(tfidf_mat)  # 用TF-IDF的值来训练关键词的重要程度
 
@@ -101,7 +102,7 @@ def LDA(tfidf_mat):
     return lda_model
 
 #把主题词打印出来？？？？
-def print_top_words(lda, feature_names, n_top_words):
+def print_top_words(lda, feature_names, n_top_words,all_word_list):
     '''
 
     :param model: lda模型
@@ -111,7 +112,11 @@ def print_top_words(lda, feature_names, n_top_words):
     '''
     for topic_idx, topic in enumerate(lda.components_):
         print("Topic #%d:" % topic_idx)
+        for i in topic.argsort()[:-n_top_words - 1:-1]:
+            #print(feature_names[i])
+            all_word_list.append(feature_names[i])
         print(" ".join([feature_names[i] for i in topic.argsort()[:-n_top_words - 1:-1]]))
+
     print()
 
 # 得到两个话题筛选出来的有效ID
@@ -148,16 +153,24 @@ def main():
     avalidID =[]
     stop_words_dict = []  # 停用词词库
     n_top_words = 10  # 提取几个关键词
+    all_word_list = []  # 统计所有的主题词
     prepare(stop_words_dict)
     #TODO 得到用户的ID
-    # getAvalidID(avalidID)
-    avalidID = ['1876693235','1978351291','619880505','1428990944','1743027543','735658915','1562697291','1601455762',
-                  '1634059993','523790789','1783376715','2007283277']
-    for i in range(len(avalidID)):
-        computeWordList(wordList,avalidID[i],stop_words_dict)   # 获取词的列表
-        word_frequency_mat, feature_names = computeWordFrequency(wordList)  # 计算词的频率
-        tfidf_mat = computeTFIDF(word_frequency_mat)  # 计算TF-IDF
-        lda = LDA(tfidf_mat)
-        print_top_words(lda, feature_names, n_top_words)
-        wordList.clear()
+    getAvalidID(avalidID)
+    #avalidID = ['735658915']
+    #avalidID = ['kyutomo','6341060674','3950978005','5697069584','6080087830','6416496314','5159012441','1601455762',
+    #             '1634059993','523790789','1783376715','2007283277']
+    for i in range(140,len(avalidID)):
+        print(i)
+        if avalidID[i] != '2102180125' and avalidID[i] !='3232798097'and avalidID[i]!='5198454773'\
+               and avalidID[i]!='3509434010' and  avalidID[i]!='2789519977' and  avalidID[i]!='5584546938' \
+                and avalidID[i] != '6491550517':
+            computeWordList(wordList, avalidID[i], stop_words_dict)  # 获取词的列表
+            word_frequency_mat, feature_names = computeWordFrequency(wordList)  # 计算词的频率
+            tfidf_mat = computeTFIDF(word_frequency_mat)  # 计算TF-IDF
+            lda = LDA(tfidf_mat)
+            print_top_words(lda, feature_names, n_top_words, all_word_list)
+            wordList.clear()
+    for j in all_word_list:
+        print(j)
 main()

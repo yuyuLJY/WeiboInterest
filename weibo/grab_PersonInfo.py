@@ -40,7 +40,8 @@ def getHTMLText(url):
 def getComment(customID,commentList,pushTime,errorList):
     print("调用parsePage")
     count = 1
-    while len(commentList) < 400 :
+    # len(commentList) < 400
+    while count < 2:
         print(count)
         print(len(commentList))
         try:
@@ -49,14 +50,15 @@ def getComment(customID,commentList,pushTime,errorList):
             #url = "https://weibo.com/u/"+str(customID)+"?is_search=0&visible=0&is_all=1&is_tag=0&profile_ftype=1&page="+str(count)+"#feedtop"
             #url = "https://weibo.com/p/1005051562697291/home?is_search=0&visible=0&is_all=1&is_tag=0&profile_ftype=1&page="+str(count)+"#feedtop"
             #url = 'https: // weibo.com / fyy1211?is_search = 0 & visible = 0 & is_all = 1 & is_tag = 0 & profile_ftype = 1 & page = '+str(count)+'  # feedtop'
+            #url = "https://weibo.com/735658915?is_search=0&visible=0&is_all=1&is_tag=0&profile_ftype=1&page="+str(count)+"#feedtop"
             #TODO 字母开头的
-            url = "https://weibo.com/"+customID+"?is_search=0&visible=0&is_all=1&is_tag=0&profile_ftype=1&page="+str(count)+"#feedtop"
-            url = "https://weibo.com/u/2841734211?profile_ftype=1&is_all=1# _0"
+            # url = "https://weibo.com/"+customID+"?is_search=0&visible=0&is_all=1&is_tag=0&profile_ftype=1&page="+str(count)+"#feedtop"
+            #url = "https://weibo.com/u/2841734211?profile_ftype=1&is_all=1# _0"
             #大部分的url
-            #url = "https://weibo.com/u/"+customID+"?is_search=0&visible=0&is_all=1&is_tag=0&profile_ftype=1&"+"page="+str(count)+"&sudaref=s.weibo.com&display=0&retcode=6102"
+            url = "https://weibo.com/u/"+customID+"?is_search=0&visible=0&is_all=1&is_tag=0&profile_ftype=1&"+"page="+str(count)+"&sudaref=s.weibo.com&display=0&retcode=6102"
             print(url)
             html = getHTMLText(url)
-            # print(html)
+            print(html)
             html = html.replace("\\t", "").replace("\\n", "").replace("\\r", "").replace("\\", "")
             html = html[html.find("<div class=\"WB_feed WB_feed_v3 WB_feed_v4\""):]
             soup = BeautifulSoup(html, 'html.parser')
@@ -240,9 +242,6 @@ def main():
     writeAvalidID(customID)
     '''
 
-    '''
-    
-    '''
     customID = [] #用户的ID
     pushTime = [] #发表的时间
     commentList = [] #评论的列表
@@ -251,20 +250,23 @@ def main():
     ID = []
     name = []
     #TODO 从文件，读取用户的ID列表
-    #customID = ['3256809975']
-    getAvalidID(customID)
+    customID = ['5417108035']
+    # getAvalidID(customID)
     for i in range(len(customID)):
-        '''
+
         # 抓取每个用户的微博内容
         getComment(customID[i], commentList,pushTime,errorList)  # 获取这个用户的评论
         commentWriteToExcel(customID[i],commentList,pushTime)
         commentList.clear()
         pushTime.clear()        
+
+
         '''
         # 抓取每个用户的follow
         getFollow(customID[i],followList,errorList)
         followWriteToExcel(customID[i], followList)
         followList.clear()
+        '''
     for i in errorList:
         print(i)
 main()
