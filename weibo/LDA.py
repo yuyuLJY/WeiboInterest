@@ -68,10 +68,10 @@ def  computeWordFrequency(wordList):
     '''
     # print(wordList)
     # min_df = 3
-    c_vectorizer = CountVectorizer(max_df=0.90, min_df = 2,max_features=100)
+    c_vectorizer = CountVectorizer(max_df=0.90, min_df = 2,max_features=150)
     word_frequency_mat = c_vectorizer .fit_transform(wordList)
     feature_names = c_vectorizer.get_feature_names()
-    # print(c_vectorizer.vocabulary_)
+    #print(c_vectorizer.vocabulary_)
     return word_frequency_mat, feature_names
     #print(word_frequency_mat)
 
@@ -83,7 +83,7 @@ def computeTFIDF(word_frequency_mat):
     '''
     tfidf_vectorizer = TfidfTransformer()
     tfidf_mat = tfidf_vectorizer.fit_transform(word_frequency_mat)
-    # print(tfidf_mat)  # 打印出TF-IDF值
+    print(tfidf_mat)  # 打印出TF-IDF值
     return tfidf_mat
 
 def LDA(tfidf_mat):
@@ -157,14 +157,11 @@ def main():
     prepare(stop_words_dict)
     #TODO 得到用户的ID
     getAvalidID(avalidID)
-    #avalidID = ['735658915']
+    avalidID = ['5697069584']
     #avalidID = ['kyutomo','6341060674','3950978005','5697069584','6080087830','6416496314','5159012441','1601455762',
     #             '1634059993','523790789','1783376715','2007283277']
-    for i in range(140,len(avalidID)):
-        print(i)
-        if avalidID[i] != '2102180125' and avalidID[i] !='3232798097'and avalidID[i]!='5198454773'\
-               and avalidID[i]!='3509434010' and  avalidID[i]!='2789519977' and  avalidID[i]!='5584546938' \
-                and avalidID[i] != '6491550517':
+    for i in range(len(avalidID)):
+            print(avalidID[i])
             computeWordList(wordList, avalidID[i], stop_words_dict)  # 获取词的列表
             word_frequency_mat, feature_names = computeWordFrequency(wordList)  # 计算词的频率
             tfidf_mat = computeTFIDF(word_frequency_mat)  # 计算TF-IDF
